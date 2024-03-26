@@ -1,0 +1,61 @@
+
+
+<p-accordion [activeIndex]="0">
+    <p-accordionTab header="Pencarian">
+        
+        <div class="row">
+            <div class="col-md-3">
+                <span class="p-float-label">
+                    <input pInputText id="username"  />
+                    <label htmlFor="username">Nama</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <span class="p-float-label">
+                    <input pInputText id="username"  />
+                    <label htmlFor="username">Email</label>
+                </span>
+            </div>
+        </div>
+
+    </p-accordionTab>
+
+</p-accordion>
+
+<p-table
+    [value]="employeeList"
+    [paginator]="true"
+    [rows]="5"
+    dataKey="id"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    scrollHeight="400px"
+    [scrollable]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+>
+    <ng-template pTemplate="header">
+        <tr>
+            <th></th>
+            <th style="width:25%">Name</th>
+            <th style="width:25%">Email</th>
+            <th style="width:25%">Birthdate</th>
+            <th style="width:25%">Status</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData>
+        <tr>
+            <td><i class="pi pi-pencil"></i>
+
+            </td>
+            <td>{{ rowData.firstName }} {{ rowData.lastName }}</td>
+            <td>{{ rowData.email }}</td>
+            <td>{{ rowData.birthDate |  date:'fullDate'}}</td>
+            <td>{{ rowData.status }}</td>
+        </tr>
+    </ng-template>
+
+</p-table>
+
+
