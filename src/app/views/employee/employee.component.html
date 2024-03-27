@@ -46,7 +46,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData>
         <tr>
-            <td><i class="pi pi-pencil"></i>
+            <td><i class="pi pi-pencil" (click)="input()"></i>
 
             </td>
             <td>{{ rowData.firstName }} {{ rowData.lastName }}</td>

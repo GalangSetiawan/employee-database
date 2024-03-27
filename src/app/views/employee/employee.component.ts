@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeModel } from 'src/app/resources/data-model/employee.model';
 import { FakeService } from 'src/app/resources/fake.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee',
@@ -12,7 +13,9 @@ export class EmployeeComponent implements OnInit{
   public employeeList: EmployeeModel[] = [];
 
   constructor(
-    private fakeService: FakeService
+    private fakeService: FakeService,
+    private router: Router,
+
   ) { 
 
   }
@@ -58,5 +61,9 @@ export class EmployeeComponent implements OnInit{
       })
       this.employeeList.push(data);
     }
+  }
+
+  public input(){
+    this.router.navigate(['/employee/input']);
   }
 }

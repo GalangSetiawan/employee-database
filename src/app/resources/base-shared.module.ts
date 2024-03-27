@@ -1,10 +1,9 @@
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { HttpClientModule } from '@angular/common/http';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { BrowserModule } from '@angular/platform-browser';
 
 import { FakeService } from './fake.service';
 
@@ -106,18 +105,15 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
       CommonModule,
       FormsModule,
       ReactiveFormsModule,
-      HttpClientModule,
-      BrowserAnimationsModule,
       RouterModule,
-      BrowserModule,
+      // HttpClientModule,
+      // BrowserAnimationsModule,
+      // BrowserModule,
 
       AvatarModule,
       AvatarGroupModule,
-      BrowserModule,
       FormsModule,
-      HttpClientModule,
       ReactiveFormsModule,
-      BrowserAnimationsModule,
       AccordionModule,
       AutoCompleteModule,
       BadgeModule,
@@ -210,18 +206,15 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
       CommonModule,
       FormsModule,
       ReactiveFormsModule,
-      HttpClientModule,
-      BrowserAnimationsModule,
       RouterModule,
-      BrowserModule,
+      // HttpClientModule,
+      // BrowserAnimationsModule,
+      // BrowserModule,
 
       AvatarModule,
       AvatarGroupModule,
-      BrowserModule,
       FormsModule,
-      HttpClientModule,
       ReactiveFormsModule,
-      BrowserAnimationsModule,
       AccordionModule,
       AutoCompleteModule,
       BadgeModule,
