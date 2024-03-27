@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FakeService } from 'src/app/resources/fake.service';
+import { FakeService } from 'src/app/resources/services/fake.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

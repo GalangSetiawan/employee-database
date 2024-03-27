@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './views/login/login.component';
-import { FakeService } from './resources/fake.service';
+import { FakeService } from './resources/services/fake.service';
 
 const routes: Routes = [
 

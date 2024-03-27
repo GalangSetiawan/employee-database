@@ -1,1 +1,268 @@
-<p>employee input works!</p>
+<p-toast></p-toast>
+    
+
+<div class="row">
+    <div class="col-md-4">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Explicabo, hic? Error aliquam numquam nobis ab neque a doloremque deleniti magni.
+    </div>
+    <div class="col-md-8">
+        <p-steps [model]="items" [readonly]="false" [activeIndex]="activeIndex" (activeIndexChange)="onActiveIndexChange($event)"></p-steps>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+
+        <div class="uk-card uk-card-default uk-card-body uk-width-1-1@m">
+            <h3 class="uk-card-title">Biodata</h3>
+            
+
+
+            <form [formGroup]="inputForm">
+
+                <div class="row">
+                    <div class="col-md-4">
+                      <div class="p-field ">
+                        <span class="p-float-label">
+                          <input type="text" id="nik" pInputText formControlName="nik"> 
+                          <label for="nik">NIK</label>
+                        </span>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="p-field ">
+                      <span class="p-float-label">
+                        <input type="text" id="firstName" pInputText formControlName="firstName"> 
+                        <label for="firstName">Nama depan</label>
+                      </span>
+                    </div>
+                  </div>
+          
+                  <div class="col-md-4">
+                    <div class="p-field ">
+                      <span class="p-float-label">
+                        <input type="text" id="lastName" pInputText formControlName="lastName"> 
+                        <label for="lastName">Nama belakang</label>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                      <div class="p-field ">
+                        <span class="p-float-label">
+                          <input type="text" id="countryBirth" pInputText formControlName="countryBirth"> 
+                          <label for="countryBirth">Kota lahir</label>
+                        </span>
+                      </div>
+                    </div>
+            
+                    <div class="col-md-4">
+                      <div class="p-field ">
+                        <span class="p-float-label">
+                            <p-calendar 
+                                id="birthDate"
+                                formControlName="birthDate"
+                                appendTo="body"
+                                [showIcon]="true">
+                            </p-calendar>
+                            <label for="birthDate">Tanggal lahir</label>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="p-field ">
+                        <span class="p-float-label">
+                          <p-dropdown
+                            id="gender"
+                            name="gender"
+                            formControlName="gender"
+                            [showClear]="true"
+                            appendTo="body"
+                            [options]="jenisKelaminList"
+                            placeholder="Jenis kelamin"
+                            [optionLabel]="'nama'">
+                          </p-dropdown>
+                          <label for="gender">Jenis kelamin</label>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="p-field ">
+                        <span class="p-float-label">
+                          <p-dropdown
+                            id="agama"
+                            name="agama"
+                            formControlName="agama"
+                            [showClear]="true"
+                            appendTo="body"
+                            [options]="agamaList"
+                            placeholder="Agama"
+                            [optionLabel]="'nama'">
+                          </p-dropdown>
+                          <label for="agama">Agama</label>
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="p-field ">
+                        <span class="p-float-label">
+                          <p-dropdown
+                            id="marriageStatus"
+                            name="marriageStatus"
+                            formControlName="marriageStatus"
+                            [showClear]="true"
+                            appendTo="body"
+                            [options]="statusPernikahanList"
+                            placeholder="Status pernikahan"
+                            [optionLabel]="'nama'">
+                          </p-dropdown>
+                          <label for="marriageStatus">Status pernikahan</label>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="p-field ">
+                        <span class="p-float-label">
+                          <input type="text" id="identityNumber" pInputText formControlName="identityNumber"> 
+                          <label for="identityNumber">Nomor KTP</label>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="p-field ">
+                        <span class="p-float-label">
+                          <p-dropdown
+                            id="ptkpStatus"
+                            name="ptkpStatus"
+                            formControlName="ptkpStatus"
+                            [showClear]="true"
+                            appendTo="body"
+                            [options]="statusPtkpList"
+                            placeholder="Status PTKP"
+                            [optionLabel]="'code'">
+                          </p-dropdown>
+                          <label for="ptkpStatus">Status PTKP</label>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+            </form>
+
+
+        </div>
+
+    </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+
+      <div class="uk-card uk-card-default uk-card-body uk-width-1-1@m">
+          <h3 class="uk-card-title">Informasi kontak</h3>
+          
+
+
+          <form [formGroup]="inputForm">
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="p-field ">
+                    <span class="p-float-label">
+                      <input type="text" id="telpNumber" pInputText formControlName="telpNumber"> 
+                      <label for="telpNumber">Nomor telepon</label>
+                    </span>
+                  </div>
+                </div>
+      
+                <div class="col-md-4">
+                  <div class="p-field ">
+                    <span class="p-float-label">
+                      <input type="text" id="phoneNumber" pInputText formControlName="phoneNumber"> 
+                      <label for="phoneNumber">Nomor handphone</label>
+                    </span>
+                  </div>
+                </div>
+        
+                <div class="col-md-4">
+                  <div class="p-field ">
+                    <span class="p-float-label">
+                      <input type="text" id="email" pInputText formControlName="email"> 
+                      <label for="email">Email</label>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <p-checkbox formControlName="isDiffDomicili" [binary]="true"  inputId="isDiffDomicili"></p-checkbox>
+                  <label for="isDiffDomicili">&nbsp; Alamat KTP dan alamat domisili berbeda</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="p-field ">
+                        <span class="p-float-label">
+                          <textarea rows="5" cols="30" id="idAddress" pInputTextarea formControlName="idAddress"></textarea>
+                          <label for="idAddress">Alamat KTP</label>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="p-field ">
+                        <span class="p-float-label">
+                          <p-dropdown
+                            id="idProvinsi"
+                            name="idProvinsi"
+                            formControlName="idProvinsi"
+                            [showClear]="true"
+                            appendTo="body"
+                            [options]="provinsiList"
+                            placeholder="Provinsi"
+                            [optionLabel]="'nama'">
+                          </p-dropdown>
+                          <label for="idProvinsi">Provinsi</label>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+
+              
+
+          </form>
+
+
+      </div>
+
+  </div>
+</div>

@@ -1,12 +1,10 @@
-
 export class EmployeeModel{
 
     public id!: string;
-
-
     public username!: string;
     public firstName!: string;
     public lastName!: string;
+    public fullName!: string;
     public email!: string;
     public birthDate!: Date;
     public basicSalary!: number

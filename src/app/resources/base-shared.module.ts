@@ -5,7 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
-import { FakeService } from './fake.service';
+import { FakeService } from './services/fake.service';
+import { ApiService } from './services/api.service';
 
 
 // Import PrimeNG modules
@@ -97,6 +98,7 @@ import { AnimateModule } from 'primeng/animate';
 import { CardModule } from 'primeng/card';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner'; 
+import { PipesModule } from './pipes/pipes.module';
 
 
 @NgModule({
@@ -106,6 +108,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
       FormsModule,
       ReactiveFormsModule,
       RouterModule,
+      PipesModule,
       // HttpClientModule,
       // BrowserAnimationsModule,
       // BrowserModule,
@@ -207,6 +210,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
       FormsModule,
       ReactiveFormsModule,
       RouterModule,
+      PipesModule,
       // HttpClientModule,
       // BrowserAnimationsModule,
       // BrowserModule,
@@ -305,6 +309,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     declarations: [],
     providers: [
         FakeService, 
+        ApiService
     ],
   })
   export class BaseSharedModule { }

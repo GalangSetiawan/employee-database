@@ -1,5 +1,23 @@
-.p-float-label {
-    display: block;
-    position: relative;
-    margin-bottom: 20px;
-}
+
+
+  .p-float-label input:focus ~ label,.p-float-label input.p-filled ~ label,.p-float-label textarea:focus ~ label,.p-float-label textarea.p-filled ~ label,.p-float-label .p-inputwrapper-focus ~ label,.p-float-label .p-inputwrapper-filled ~ label {
+    top: 0.1rem !important;
+    background: white !important;
+    padding-left: 0.2rem !important;
+    padding-right: 0.2rem !important;
+  }
+  
+  .p-field{
+    // background-color: lightgrey;
+    padding-bottom: 20px;
+  }
+  
+  .p-inputtext,
+  p-inputnumber,
+  .p-inputnumber,
+  .p-dropdown,
+  .p-calendar,
+  .p-inputnumber,
+  .p-autocomplete {
+    width: 100% !important;
+  }

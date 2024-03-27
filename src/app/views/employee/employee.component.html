@@ -1,40 +1,71 @@
 
+<div class="row">
+    <div class="col-md-3">
+      <button id="btnSearch" pButton pRipple icon="pi pi-plus" class="p-button mb-3" (click)="search()"> 
+        <span style="padding-left: 5px;"> Tambah </span>
+      </button>
+
+    </div>
+</div>
 
 <p-accordion [activeIndex]="0">
     <p-accordionTab header="Pencarian">
         
-        <div class="row">
-            <div class="col-md-3">
-                <span class="p-float-label">
-                    <input pInputText id="username"  />
-                    <label htmlFor="username">Nama</label>
-                </span>
+        <form [formGroup]="filterForm">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="p-field">
+                        <span class="p-float-label">
+                            <input pInputText id="nama" formControlName="nama" />
+                            <label htmlFor="nama">Nama</label>
+                        </span>
+                    </div>
+                </div>
             </div>
-        </div>
+    
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="p-field">
+                        <span class="p-float-label">
+                            <input pInputText id="email" formControlName="email"  />
+                            <label htmlFor="email">Email</label>
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-        <div class="row">
-            <div class="col-md-3">
-                <span class="p-float-label">
-                    <input pInputText id="username"  />
-                    <label htmlFor="username">Email</label>
-                </span>
+            <div class="row">
+                <div class="col-md-3">
+                  <button id="btnSearch" pButton pRipple icon="pi pi-search" class="p-button" (click)="search()"> 
+                    <span style="padding-left: 5px;"> Search </span>
+                  </button>
+      
+                </div>
             </div>
-        </div>
+        </form>
+
 
     </p-accordionTab>
 
 </p-accordion>
+<!-- scrollHeight="600px" -->
+
+<div class="mb-3">
+    <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
+    <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+    <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
+</div>
 
 <p-table
-    [value]="employeeList"
+    [value]="filteredEmployee"
     [paginator]="true"
-    [rows]="5"
-    dataKey="id"
+    [rows]="10"
+    [showCurrentPageReport]="true"
     [tableStyle]="{ 'min-width': '50rem' }"
-    scrollHeight="400px"
-    [scrollable]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    (onPage)="pageChange($event)"
     [rowsPerPageOptions]="[10, 25, 50]"
->
+    >
     <ng-template pTemplate="header">
         <tr>
             <th></th>
@@ -51,10 +82,11 @@
             </td>
             <td>{{ rowData.firstName }} {{ rowData.lastName }}</td>
             <td>{{ rowData.email }}</td>
-            <td>{{ rowData.birthDate |  date:'fullDate'}}</td>
+            <td>{{ rowData.birthDate |  dateFormat: 'mediumDate' }}</td>
             <td>{{ rowData.status }}</td>
         </tr>
     </ng-template>
+
 
 </p-table>
 
