@@ -7,7 +7,6 @@ import { FakeService } from './resources/services/fake.service';
 const routes: Routes = [
 
   { path: '', component: LoginComponent },
-  { path: 'login', component: LoginComponent },
   {
     path: 'employee',
     loadChildren: () =>

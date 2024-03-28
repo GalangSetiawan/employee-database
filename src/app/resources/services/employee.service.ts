@@ -10,8 +10,6 @@ export class EmployeeService {
   public employeeList: EmployeeCompleteModel[] = employeeList;
   constructor() { }
 
-
-
   public getEmployeeById(id:string) {
     this.employee = this.employeeList.find(emp => emp.id === id);
     return this.employee = this.employeeList.find(emp => emp.id === id);
@@ -33,13 +31,7 @@ export class EmployeeService {
 
   public editEmployee(data:EmployeeCompleteModel){
     this.employeeList = this.getAllEmployee();
-    console.log('editEmployee data===>',data)
-
-    console.log('editEmployee all employee ===>',this.employeeList)
-
-
     var findIdx = this.employeeList.findIndex(emp => emp.id === data.id);
-    console.log('editEmployee ===>',findIdx)
     if(findIdx != -1) {
       this.employeeList[findIdx] = data; 
       return data;

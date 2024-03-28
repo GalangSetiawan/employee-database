@@ -8,7 +8,8 @@
           <span *ngIf="activeIndex == 0">Data pribadi</span>
           <span *ngIf="activeIndex == 1">Data kepegawaian</span>
         </h3>
-        <p>Mohon lengkapi data yang wajib diisi sebelum pindah ke halaman selanjutnya.</p>
+        <p *ngIf="activeIndex == 0">Mohon lengkapi data yang wajib diisi sebelum pindah ke halaman selanjutnya.</p>
+        <p *ngIf="activeIndex == 1">Mohon lengkapi data yang wajib diisi sebelum simpan data.</p>
     </div>
     </div>
     <div class="col-md-8">
@@ -353,10 +354,10 @@
                               id="domiciliProvinsi"
                               name="domiciliProvinsi"
                               formControlName="domiciliProvinsi"
-                              (onChange)="onProvinsiChange($event)"
+                              (onChange)="onProvinsiChange($event, true)"
                               [showClear]="true"
                               appendTo="body"
-                              [options]="provinsiList"
+                              [options]="provinsiDomisiliList"
                               placeholder="Provinsi"
                               [optionLabel]="'nama'">
                             </p-dropdown>
@@ -374,10 +375,10 @@
                               id="domiciliKabupaten"
                               name="domiciliKabupaten"
                               formControlName="domiciliKabupaten"
-                              (onChange)="onKabupatenChange($event)"
+                              (onChange)="onKabupatenChange($event, true)"
                               [showClear]="true"
                               appendTo="body"
-                              [options]="kabupatenList"
+                              [options]="kabupatenDomisiliList"
                               placeholder="Kabupaten"
                               [optionLabel]="'nama'">
                             </p-dropdown>
@@ -395,10 +396,10 @@
                               id="domiciliKecamatan"
                               name="domiciliKecamatan"
                               formControlName="domiciliKecamatan"
-                              (onChange)="onKecamatanChange($event)"
+                              (onChange)="onKecamatanChange($event, true)"
                               [showClear]="true"
                               appendTo="body"
-                              [options]="kecamatanList"
+                              [options]="kecamatanDomisiliList"
                               placeholder="Kecamatan"
                               [optionLabel]="'nama'">
                             </p-dropdown>
@@ -418,7 +419,7 @@
                               formControlName="domiciliKelurahan"
                               [showClear]="true"
                               appendTo="body"
-                              [options]="kelurahanList"
+                              [options]="kelurahanDomisiliList"
                               placeholder="Kelurahan"
                               [optionLabel]="'nama'">
                             </p-dropdown>
@@ -621,7 +622,7 @@
             <div class="col-md-4">
               <div class="p-field ">
                 <span class="p-float-label">
-                  <input type="text" id="nomorRekening" pInputText formControlName="nomorRekening"> 
+                  <p-inputNumber formControlName="nomorRekening" inputId="nomorRekening"> </p-inputNumber>
                   <label for="nomorRekening">Nomor rekening *</label>
                 </span>
               </div>
@@ -638,7 +639,7 @@
 
   <div class="row mt-3 mb-3">
     <div class="col-md-3">
-      <button id="btnSearch" pButton pRipple class="p-button" (click)="simpan()"> 
+      <button id="btnSearch" pButton pRipple class="p-button" [disabled]="dataKepegawaianForm.invalid" (click)="simpan()"> 
         <span> Simpan </span>
       </button>
       &nbsp;

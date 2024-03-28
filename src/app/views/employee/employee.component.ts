@@ -10,6 +10,7 @@ import { StatusKepegawaianModel } from 'src/app/resources/data-model/status-kepe
 import { GlobalDataModel } from 'src/app/resources/data-model/global-data.model copy';
 import { ConfirmationService, MessageService, ConfirmEventType  } from 'primeng/api';
 import { EmployeeService } from 'src/app/resources/services/employee.service';
+import * as $ from 'jquery';
 
 
 @Component({
@@ -26,6 +27,13 @@ export class EmployeeComponent implements OnInit{
   public filterForm!: FormGroup;
   public statusKepegawaianList: StatusKepegawaianModel[] = [];
   public departemenList: GlobalDataModel[] = [];
+
+  public showCardView = true;
+  public currentPageItem: EmployeeCompleteModel[] = [];
+  public arrPagination:any = []
+  public currentPage = 1;
+  public showingMaxDataInOnePage = {value: 10} ;
+  public arrShowingMaxData = [{value: 5},{value: 10},{value: 20},{value: 50},{value: 100}]
 
   constructor(
     private fb: FormBuilder,
@@ -48,10 +56,10 @@ export class EmployeeComponent implements OnInit{
     this.initDepartemen();
     this.initStatusKepegawaian();
 
-    var addData = SessionHelper.getItemAndDestroy('INPUT_EMPLOYEE');
-    if(!ObjectHelper.isEmpty(addData)){
-      this.employeeList.unshift(addData)
-    }
+    this.pagination(1);
+    $('#pagination #nextBtn').addClass('customColor')
+
+
   }
 
   private initForm() {
@@ -80,21 +88,8 @@ export class EmployeeComponent implements OnInit{
 
   public getFakeEmployee(){
   
-    // this.uiBlockService.showUiBlock();
-    // setTimeout(() => {
-    //   this.fakeService.getFakeEmployee()
-    //     .subscribe((result: any) => {
-    //       console.log('result ===>', result)
-    //       this.employeeList = result.data;
-    //       this.filteredEmployee = this.employeeList;
-    //   });
-    //  this.uiBlockService.hideUiBlock();
-    // }, 500);
-
     this.employeeList = this.employeeService.getAllEmployee();
     this.filteredEmployee = this.employeeList;
-    console.log('this.employeeList ===>', this.employeeList)
-
   
   }
 
@@ -115,10 +110,54 @@ export class EmployeeComponent implements OnInit{
     SessionHelper.setItem('FILTER_BROWSE', this.filterForm.value);
     this.router.navigate(['./view'], { relativeTo: this.activatedRoute }); 
   }
+
+  
+
+  public pagination(page:any){
+    this.currentPage = page;
+    this.arrPagination = [];
+    this.currentPageItem = [];
+    var itemInPage = this.showingMaxDataInOnePage.value;
+    var arr = this.filteredEmployee;
+    this.arrPagination = arr.map( function(e,i){ 
+        return i%itemInPage===0 ? arr.slice(i,i+itemInPage) : null; 
+    }).filter(function(e){ return e; });
+    this.currentPageItem = this.arrPagination[parseInt(page)-1]
+  }
+
+  prevPage(){
+    if(this.currentPage == 1) this.currentPage = 1
+    else this.currentPage -= 1
+    console.log('prev page | currentPage ===>',this.currentPage);
+    this.pagination(this.currentPage);
+    if(this.currentPage == 1){
+      $('#pagination #prevBtn').removeClass('customColor');
+      $('#pagination #nextBtn').addClass('customColor');
+    }else{
+      $('#pagination #prevBtn').addClass('customColor');
+      $('#pagination #nextBtn').addClass('customColor');
+    }
+  }
+
+
+  
+  nextPage(){
+    if(this.currentPage == this.arrPagination.length) this.currentPage = this.arrPagination.length
+    else this.currentPage += 1
+    this.pagination(this.currentPage);
+    if(this.currentPage == this.arrPagination.length){
+      $('#pagination #nextBtn').removeClass('customColor');
+      $('#pagination #prevBtn').addClass('customColor');
+    }else{
+      $('#pagination #nextBtn').addClass('customColor');
+      $('#pagination #prevBtn').addClass('customColor');
+
+    }
+  }
+
   
 
   public search() {
-
     this.uiBlockService.showUiBlock();
     setTimeout(() => {
 
@@ -150,6 +189,8 @@ export class EmployeeComponent implements OnInit{
       if(!ObjectHelper.isEmpty(filterStatusKepegawaian)){
         this.filteredEmployee = this.filteredEmployee.filter( x=> x.employeeStatus.includes(filterStatusKepegawaian));
       }
+
+      this.pagination(1);
 
       this.uiBlockService.hideUiBlock();
     }, 500);

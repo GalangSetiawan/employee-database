@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Message } from 'primeng/api';
 import { LoginCredentialModel } from 'src/app/resources/data-model/login.model';
 import { FakeService } from 'src/app/resources/services/fake.service';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  providers: [MessageService]
+
 })
 export class LoginComponent implements OnInit {
 
@@ -19,7 +23,10 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private fakeService: FakeService
+    private fakeService: FakeService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -32,9 +39,8 @@ export class LoginComponent implements OnInit {
 
   private initForm() {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      language: []
+      username: [null, Validators.required],
+      password: [null, Validators.required],
     });
   }
 
@@ -42,14 +48,28 @@ export class LoginComponent implements OnInit {
   public loginValidation(){
     var isValidLogin = true;
 
+    if(this.loginForm.value.username != this.validLoginCredential.username){
+      this.messages = [{ severity: 'error', detail: 'Username tidak terdaftar' }];
+
+      isValidLogin = false;
+    } else {
+      if(this.loginForm.value.password != this.validLoginCredential.password){
+        this.messages = [{ severity: 'error', detail: 'Password salah' }];
+        isValidLogin = false;
+
+      }
+    }
+
     if(isValidLogin){
+      this.messages = [{ severity: 'success', detail: 'Anda berhasil login' }];
       this.login();
     }
   }
 
 
   public login(){
-    this.messages = [{ severity: 'error', detail: 'Message Content' }];
+    this.router.navigate(['./employee'], { relativeTo: this.activatedRoute });
+
   }
 
   public getValidLoginCredential(){

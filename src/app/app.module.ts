@@ -23,6 +23,7 @@ import { UiBlockModule } from './resources/components/ui-block/ui-block.module';
     HttpClientModule,
     BrowserAnimationsModule,
     UiBlockModule,
+    // SnackbarModule,
     BaseSharedModule,
     EmployeeModule
   ],

@@ -10,13 +10,13 @@
                                 <div class=" uk-text-center uk-padding-small">
                                     <img style="width: 200px;" src="assets/img/logo.png" />
                                 </div>                
-                                <form>
+                                <form [formGroup]="loginForm">
                                     <div class="uk-margin">
                                         <div class="p-inputgroup">
                                             <span class="p-inputgroup-addon">
                                                 <i class="pi pi-user"></i>
                                             </span>
-                                            <input pInputText placeholder="Username" />
+                                            <input pInputText formControlName="username" placeholder="Username" />
                                         </div>
                                     </div>
                                     <div class="uk-margin">
@@ -24,16 +24,16 @@
                                             <span class="p-inputgroup-addon">
                                                 <i class="pi pi-key"></i>
                                             </span>
-                                            <input pInputText placeholder="password" />
+                                            <input pInputText formControlName="password" placeholder="password" />
                                         </div>
                                     </div>
 
-                                    <div style="zoom:0.7">
+                                    <div>
                                         <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
                                     </div>
 
                                     <div class="uk-margin">
-                                        <p-button label="Login" icon="pi pi-check" (onClick)="loginValidation()" size="large"></p-button>
+                                        <p-button label="Login" [disabled]="loginForm.invalid" (onClick)="loginValidation()" size="large"></p-button>
                                     </div>
                                     <div class="uk-text-small uk-text-center">
                                         Hint <br>
@@ -51,3 +51,4 @@
 
     
 </div>
+<p-toast></p-toast>

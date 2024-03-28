@@ -44,6 +44,10 @@ export class EmployeeDetailComponent implements OnInit {
   public kabupatenList: GlobalDataModel[] = [];
   public kecamatanList: GlobalDataModel[] = [];
   public kelurahanList: GlobalDataModel[] = [];
+  public provinsiDomisiliList: GlobalDataModel[] = [];
+  public kabupatenDomisiliList: GlobalDataModel[] = [];
+  public kecamatanDomisiliList: GlobalDataModel[] = [];
+  public kelurahanDomisiliList: GlobalDataModel[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -143,13 +147,44 @@ export class EmployeeDetailComponent implements OnInit {
           
           var findEmployeeStatus = this.statusKepegawaianList.find(x=> x.nama == this.selectedEmployee.employeeStatus);
           var findDepartemen = this.departemenList.find(x=> x.nama == this.selectedEmployee.departement);
-          var findBank = this.bankList.find(x=> x.code == this.selectedEmployee.bankRekening);
+          var findBank = this.bankList.find(x=> x.name == this.selectedEmployee.bankRekening);
           
+
+          // cari alamat KTP
+          this.getKabupaten(this.selectedEmployee.idProvinsi); 
+          this.getKecamatan(this.selectedEmployee.idKabupaten); 
+          this.getKelurahan(this.selectedEmployee.idKecamatan); 
+          this.getKabupaten(this.selectedEmployee.domiciliProvinsi, true);
+          this.getKecamatan(this.selectedEmployee.domiciliKabupaten, true);
+          this.getKelurahan(this.selectedEmployee.domiciliKecamatan, true);
+
+          setTimeout(() => {
+            var findidProvinsi = this.provinsiList.find(x=> x.id == this.selectedEmployee.idProvinsi);
+            var findidKabupaten = this.kabupatenList.find(x=> x.id == this.selectedEmployee.idKabupaten);
+            var findidKecamatan = this.kecamatanList.find(x=> x.id == this.selectedEmployee.idKecamatan);
+            var findidKelurahan = this.kelurahanList.find(x=> x.id == this.selectedEmployee.idKelurahan);
+            var findDomiciliProvinsi = this.provinsiDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliProvinsi);
+            var findDomiciliKabupaten = this.kabupatenDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliKabupaten);
+            var findDomiciliKecamatan = this.kecamatanDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliKecamatan);
+            var findDomiciliKelurahan = this.kelurahanDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliKelurahan);
+
+            this.dataPribadiForm.patchValue({
+              idProvinsi: findidProvinsi,
+              idKabupaten: findidKabupaten,
+              idKecamatan: findidKecamatan,
+              idKelurahan: findidKelurahan,
+              domiciliProvinsi: findDomiciliProvinsi,
+              domiciliKabupaten: findDomiciliKabupaten,
+              domiciliKecamatan: findDomiciliKecamatan,
+              domiciliKelurahan: findDomiciliKelurahan,
+            });
+          }, 1000);
+
           this.dataPribadiForm.patchValue({
             marriageStatus: findMariageStatus,
             gender: findGender,
             ptkpStatus: findPtkpStatus,
-            agama: findAgama
+            agama: findAgama,
           });
     
           this.dataKepegawaianForm.patchValue({
@@ -157,10 +192,11 @@ export class EmployeeDetailComponent implements OnInit {
             departement: findDepartemen,
             bankRekening: findBank,
           });
+
+          this.dataKepegawaianForm.disable();
+          this.dataPribadiForm.disable();
         }
       }
-      this.dataKepegawaianForm.disable();
-      this.dataPribadiForm.disable();
       this.uiBlockService.hideUiBlock();
     }, 500);
   }
@@ -183,74 +219,122 @@ export class EmployeeDetailComponent implements OnInit {
     }
   }
 
-  public onProvinsiChange(event:any){
-    this.dataPribadiForm.patchValue({
-      idKabupaten: null,
-      idKecamatan: null,
-      idKelurahan: null,
-    });
-    this.kabupatenList = [];
-    this.kecamatanList = [];
-    this.kelurahanList = [];
-
-    if(!ObjectHelper.isEmpty(event.value)){
-      this.getKabupaten(event.value.id)
+  public onProvinsiChange(event:any, isDomisili = false){
+    if(isDomisili){
+      this.dataPribadiForm.patchValue({
+        domiciliKabupaten: null,
+        domiciliKecamatan: null,
+        domiciliKelurahan: null,
+      });
+      this.kabupatenDomisiliList = [];
+      this.kecamatanDomisiliList = [];
+      this.kelurahanDomisiliList = [];
+  
+      if(!ObjectHelper.isEmpty(event.value)){
+        this.getKabupaten(event.value.id, true)
+      }
+    }else{
+      this.dataPribadiForm.patchValue({
+        idKabupaten: null,
+        idKecamatan: null,
+        idKelurahan: null,
+      });
+      this.kabupatenList = [];
+      this.kecamatanList = [];
+      this.kelurahanList = [];
+  
+      if(!ObjectHelper.isEmpty(event.value)){
+        this.getKabupaten(event.value.id)
+      }
     }
   }
 
-  public onKabupatenChange(event:any){
-    this.dataPribadiForm.patchValue({
-      idKecamatan: null,
-      idKelurahan: null,
-    });
-    this.kecamatanList = [];
-    this.kelurahanList = [];
+  public onKabupatenChange(event:any, isDomisili = false){
+    if(isDomisili){
+      this.dataPribadiForm.patchValue({
+        domiciliKecamatan: null,
+        domiciliKelurahan: null,
+      });
+      this.kecamatanDomisiliList = [];
+      this.kelurahanDomisiliList = [];
+  
+      if(!ObjectHelper.isEmpty(event.value)){
+        this.getKecamatan(event.value.id, true)
+      }
+    }else{
+      this.dataPribadiForm.patchValue({
+        idKecamatan: null,
+        idKelurahan: null,
+      });
+      this.kecamatanList = [];
+      this.kelurahanList = [];
+  
+      if(!ObjectHelper.isEmpty(event.value)){
+        this.getKecamatan(event.value.id)
+      }
+    }
+    
+  }
 
-    if(!ObjectHelper.isEmpty(event.value)){
-      this.getKecamatan(event.value.id)
+  public onKecamatanChange(event:any, isDomisili = false){
+    if(isDomisili){
+      this.dataPribadiForm.patchValue({
+        domiciliKelurahan: null,
+      });
+      this.kelurahanDomisiliList = [];
+  
+      if(!ObjectHelper.isEmpty(event.value)){
+        this.getKelurahan(event.value.id, true)
+      }
+    } else{
+      this.dataPribadiForm.patchValue({
+        idKelurahan: null,
+      });
+      this.kelurahanList = [];
+  
+      if(!ObjectHelper.isEmpty(event.value)){
+        this.getKelurahan(event.value.id)
+      }
+    } 
+  }
+
+  public initProvinsi(){
+    this.api.getProvinsi().subscribe(res => {
+      this.provinsiList = res;
+      this.provinsiDomisiliList = res;
+    });
+  }
+
+  public getKabupaten(code:string, isDomisili = false){
+    if(!ObjectHelper.isEmpty(code)){
+      this.api.getKabupaten('kabupaten/'+code).subscribe(res => {
+        if(isDomisili) this.kabupatenDomisiliList = res;
+        else this.kabupatenList = res;
+      });
+    }
+  }
+
+  public getKecamatan(code:string, isDomisili = false){
+    if(!ObjectHelper.isEmpty(code)){
+      this.api.getKecamatan('kecamatan/'+code).subscribe(res => {
+        if(isDomisili) this.kecamatanDomisiliList = res;
+        else this.kecamatanList = res;
+      });
+    }
+  }
+
+  public getKelurahan(code:string, isDomisili = false){
+    if(!ObjectHelper.isEmpty(code)){
+      this.api.getKelurahan('kelurahan/'+code).subscribe(res => {
+        if(isDomisili) this.kelurahanDomisiliList = res;
+        else this.kelurahanList = res;
+      });
     }
   }
 
   public initBank(){
     this.api.getBank().subscribe(res => {
       this.bankList = res;
-    });
-  }
-
-
-  public onKecamatanChange(event:any){    
-    this.dataPribadiForm.patchValue({
-      idKelurahan: null,
-    });
-    this.kelurahanList = [];
-
-    if(!ObjectHelper.isEmpty(event.value)){
-      this.getKelurahan(event.value.id)
-    }
-  }
-
-
-  public initProvinsi(){
-    this.api.getProvinsi().subscribe(res => {
-      this.provinsiList = res;
-    });
-  }
-
-  public getKabupaten(code:string){
-    this.api.getKabupaten(code).subscribe(res => {
-      this.kabupatenList = res;
-    });
-  }
-
-  public getKecamatan(code:string){
-    this.api.getKecamatan(code).subscribe(res => {
-      this.kecamatanList = res;
-    });
-  }
-
-  public getKelurahan(code:string){
-    this.api.getKelurahan(code).subscribe(res => {
-      this.kelurahanList = res;
     });
   }
 

@@ -27,8 +27,25 @@ p-inputnumber,
   z-index: 00;
 }
 
+.p-paginator {
+  justify-content: right !important;
+}
+
 .login-container{
   .p-button{
       width:100% !important
   }
+}
+
+
+.app-pull-left {
+  float: left !important;
+  align-content: flex-start;
+  margin-right: auto !important;
+}
+
+.app-pull-right {
+  float: right !important;
+  align-content: flex-end;
+  margin-left: auto !important;
 }
