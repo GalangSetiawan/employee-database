@@ -1,0 +1,9 @@
+<div [ngClass]="{'ui-block-modal': true}" *ngIf="show">
+    <div class="loading-text"> LOADING </div>
+    <div class="ui-block-spinner">
+      <!-- <mat-progress-spinner [color]="'#999999'" [diameter]="75" [mode]="'indeterminate'"></mat-progress-spinner> -->
+      <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+
+    </div>
+  </div>
+  

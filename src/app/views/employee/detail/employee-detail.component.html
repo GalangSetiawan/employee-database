@@ -1,20 +1,13 @@
-<p-toast></p-toast>
-    
 
-<div class="row">
-    <div class="col-md-4">
-      <div class="uk-card ">
-        <h3 class="uk-card-title">
-          <span *ngIf="activeIndex == 0">Data pribadi</span>
-          <span *ngIf="activeIndex == 1">Data kepegawaian</span>
-        </h3>
-        <p>Mohon lengkapi data yang wajib diisi sebelum pindah ke halaman selanjutnya.</p>
-    </div>
-    </div>
-    <div class="col-md-8">
-        <p-steps [model]="items" [readonly]="false" [activeIndex]="activeIndex" (activeIndexChange)="onActiveIndexChange($event)"></p-steps>
-    </div>
+
+
+<div>
+  <ul class="uk-child-width-expand" uk-tab>
+      <li [class.uk-active] = "activeIndex === 0"><a (click)="activeIndex = 0">Data pribadi</a></li>
+      <li [class.uk-active] = "activeIndex === 1"><a (click)="activeIndex = 1">Data kepegawaian</a></li>
+  </ul>
 </div>
+
 
 
 
@@ -442,19 +435,6 @@
     </div>
   </div>
 
-  <div class="row mt-3 mb-3">
-    <div class="col-md-3">
-      <button id="btnSearch" pButton pRipple class="p-button" (click)="gotoNextTab()"> 
-        <span> Selanjutnya </span>
-      </button>
-      &nbsp;
-      <button pButton pRipple  class="p-button-outlined" (click)="batal()"> 
-        <span>Batal</span>
-      </button>
-
-    </div>
-  </div>
-
 </ng-container>
 
 <ng-container *ngIf="activeIndex == 1">
@@ -562,7 +542,7 @@
                 </span>
               </div>
             </div>
-
+            
           </div>
 
         </form>
@@ -636,17 +616,13 @@
     </div>
   </div>
 
-  <div class="row mt-3 mb-3">
-    <div class="col-md-3">
-      <button id="btnSearch" pButton pRipple class="p-button" (click)="simpan()"> 
-        <span> Simpan </span>
-      </button>
-      &nbsp;
-      <button pButton pRipple  class="p-button-outlined" (click)="activeIndex = 0"> 
-        <span>Kembali</span>
-      </button>
-
-    </div>
-  </div>
-
 </ng-container>
+
+<div class="row mt-3 mb-3">
+  <div class="col-md-3">
+    <button pButton pRipple  class="p-button-outlined" (click)="batal()"> 
+      <span>Kembali</span>
+    </button>
+
+  </div>
+</div>

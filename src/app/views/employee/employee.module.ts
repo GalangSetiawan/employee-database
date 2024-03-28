@@ -4,6 +4,7 @@ import { BaseSharedModule } from "src/app/resources/base-shared.module";
 import { EmployeeRoutingModule } from "./employee.routing";
 import { EmployeeComponent } from "./employee.component";
 import { EmployeeInputComponent } from "./input/employee-input.component";
+import { EmployeeDetailComponent } from "./detail/employee-detail.component";
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { EmployeeInputComponent } from "./input/employee-input.component";
   ],
   declarations: [
     EmployeeComponent,
-    EmployeeInputComponent
+    EmployeeInputComponent,
+    EmployeeDetailComponent
   ],
   providers: [
   ]

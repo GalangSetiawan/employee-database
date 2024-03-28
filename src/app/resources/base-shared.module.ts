@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 
 import { FakeService } from './services/fake.service';
 import { ApiService } from './services/api.service';
+import { EmployeeService } from './services/employee.service';
 
 
 // Import PrimeNG modules
@@ -309,7 +310,8 @@ import { PipesModule } from './pipes/pipes.module';
     declarations: [],
     providers: [
         FakeService, 
-        ApiService
+        ApiService,
+        EmployeeService
     ],
   })
   export class BaseSharedModule { }

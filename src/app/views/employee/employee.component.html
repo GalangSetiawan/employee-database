@@ -1,7 +1,7 @@
 
 <div class="row">
     <div class="col-md-3">
-      <button id="btnSearch" pButton pRipple icon="pi pi-plus" class="p-button mb-3" (click)="search()"> 
+      <button id="btnSearch" pButton pRipple icon="pi pi-plus" class="p-button mb-3" (click)="input()"> 
         <span style="padding-left: 5px;"> Tambah </span>
       </button>
 
@@ -16,8 +16,17 @@
                 <div class="col-md-3">
                     <div class="p-field">
                         <span class="p-float-label">
-                            <input pInputText id="nama" formControlName="nama" />
-                            <label htmlFor="nama">Nama</label>
+                            <input pInputText id="nik" formControlName="nik" />
+                            <label htmlFor="nik">NIK </label>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="p-field">
+                        <span class="p-float-label">
+                            <input pInputText id="fullName" formControlName="fullName" />
+                            <label htmlFor="fullName">Nama karyawan</label>
                         </span>
                     </div>
                 </div>
@@ -27,10 +36,48 @@
                 <div class="col-md-3">
                     <div class="p-field">
                         <span class="p-float-label">
-                            <input pInputText id="email" formControlName="email"  />
-                            <label htmlFor="email">Email</label>
+                            <input pInputText id="position" formControlName="position"  />
+                            <label htmlFor="position">Jabatan</label>
                         </span>
                     </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="p-field ">
+                      <span class="p-float-label">
+                        <p-dropdown
+                          id="departement"
+                          name="departement"
+                          formControlName="departement"
+                          [showClear]="true"
+                          appendTo="body"
+                          [options]="departemenList"
+                          placeholder="Departemen"
+                          [optionLabel]="'nama'">
+                        </p-dropdown>
+                        <label for="departement">Departemen *</label>
+                      </span>
+                    </div>
+                  </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                  <div class="p-field ">
+                    <span class="p-float-label">
+                      <p-dropdown
+                        id="employeeStatus"
+                        name="employeeStatus"
+                        formControlName="employeeStatus"
+                        [showClear]="true"
+                        appendTo="body"
+                        [options]="statusKepegawaianList"
+                        placeholder="Status kepegawaian"
+                        [optionLabel]="'nama'">
+                      </p-dropdown>
+                      <label for="employeeStatus">Status kepegawaian *</label>
+                    </span>
+                  </div>
                 </div>
             </div>
 
@@ -50,11 +97,6 @@
 </p-accordion>
 <!-- scrollHeight="600px" -->
 
-<div class="mb-3">
-    <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
-    <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
-    <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
-</div>
 
 <p-table
     [value]="filteredEmployee"
@@ -62,28 +104,34 @@
     [rows]="10"
     [showCurrentPageReport]="true"
     [tableStyle]="{ 'min-width': '50rem' }"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    (onPage)="pageChange($event)"
+    currentPageReportTemplate="Showing {first} to {last} of {{filteredEmployee.length}} entries"
     [rowsPerPageOptions]="[10, 25, 50]"
     >
     <ng-template pTemplate="header">
         <tr>
             <th></th>
-            <th style="width:25%">Name</th>
-            <th style="width:25%">Email</th>
-            <th style="width:25%">Birthdate</th>
-            <th style="width:25%">Status</th>
+            <th></th>
+            <th></th>
+            <th pSortableColumn="nik">NIK  <p-sortIcon field="nik"></p-sortIcon></th>
+            <th pSortableColumn="fullName">Nama karyawan<p-sortIcon field="fullName"></p-sortIcon></th>
+            <th pSortableColumn="position">Jabatan<p-sortIcon field="position"></p-sortIcon></th>
+            <th pSortableColumn="departement">Departemen<p-sortIcon field="departement"></p-sortIcon></th>
+            <th pSortableColumn="startWorkingDate">Tanggal mulai kerja<p-sortIcon field="startWorkingDate"></p-sortIcon></th>
+            <th pSortableColumn="employeeStatus">Status kepegawaian<p-sortIcon field="employeeStatus"></p-sortIcon></th>
+            <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData>
         <tr>
-            <td><i class="pi pi-pencil" (click)="input()"></i>
-
-            </td>
-            <td>{{ rowData.firstName }} {{ rowData.lastName }}</td>
-            <td>{{ rowData.email }}</td>
-            <td>{{ rowData.birthDate |  dateFormat: 'mediumDate' }}</td>
-            <td>{{ rowData.status }}</td>
+            <td><i class="pi pi-pencil" (click)="edit(rowData)"></i></td>
+            <td><i class="pi pi-search" (click)="lihatDetail(rowData)"></i></td>
+            <td><i class="pi pi-trash" (click)="confirmDelete(rowData)"></i></td>
+            <td>{{ rowData.nik }}</td>
+            <td>{{ rowData.fullName }}</td>
+            <td>{{ rowData.position }}</td>
+            <td>{{ rowData.departement }}</td>
+            <td>{{ rowData.startWorkingDate |  dateFormat: 'shortDate' }}</td>
+            <td>{{ rowData.employeeStatus }}</td>
         </tr>
     </ng-template>
 
@@ -91,3 +139,5 @@
 </p-table>
 
 
+<p-confirmDialog [style]="{width: '50vw', minWidth: '420px'}"></p-confirmDialog>
+<p-toast></p-toast>

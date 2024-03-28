@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { EmployeeCompleteModel } from '../data-model/employee-complete.model';
 
 @Injectable()
 export class FakeService {
@@ -32,5 +33,14 @@ export class FakeService {
 
   getAgama() {
     return this.http.get('/assets/fake-data-json/agama.json');
+  }
+
+  getDepartemen() {
+    return this.http.get('/assets/fake-data-json/departemen.json');
+  }
+
+
+  public employeeList: EmployeeCompleteModel[] = [];
+  generateEmployee(){
   }
 }

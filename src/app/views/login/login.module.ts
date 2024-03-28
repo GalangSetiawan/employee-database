@@ -14,8 +14,8 @@ import { FakeService } from "src/app/resources/services/fake.service";
     // LoginComponent,
   ],
   providers: [
-    // FakeService
+    FakeService
   ]
 })
 
-export class DashboardPenilaian360Module {}
+export class LoginModule {}

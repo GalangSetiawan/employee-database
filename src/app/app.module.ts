@@ -8,22 +8,21 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './views/login/login.component';
-import { InputComponent } from './employee/input/input.component';
 import { EmployeeModule } from './views/employee/employee.module';
+import { UiBlockModule } from './resources/components/ui-block/ui-block.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    InputComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    
+    UiBlockModule,
     BaseSharedModule,
     EmployeeModule
   ],

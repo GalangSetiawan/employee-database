@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FakeService } from 'src/app/resources/services/fake.service';
-import { EmployeeService } from 'src/app/resources/services/employee.service';
 import { MenuItem, MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GenderModel } from 'src/app/resources/data-model/gender.model';
@@ -20,13 +19,13 @@ import { StatusPtkpModel } from 'src/app/resources/data-model/status-ptkp.model'
 import { UiBlockService } from 'src/app/resources/components/ui-block/ui-block.service';
 
 @Component({
-  selector: 'app-employee-input',
-  templateUrl: './employee-input.component.html',
-  styleUrls: ['./employee-input.component.scss'],
+  selector: 'app-employee-detail',
+  templateUrl: './employee-detail.component.html',
+  styleUrls: ['./employee-detail.component.scss'],
   providers: [MessageService]
 
 })
-export class EmployeeInputComponent implements OnInit {
+export class EmployeeDetailComponent implements OnInit {
   public messages!: Message[];
   public selectedEmployee: EmployeeCompleteModel | any = null;
   public items: MenuItem[] = [];
@@ -49,7 +48,6 @@ export class EmployeeInputComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private fakeService: FakeService,
-    private employeeService: EmployeeService,
     private uiBlockService: UiBlockService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -146,15 +144,6 @@ export class EmployeeInputComponent implements OnInit {
           var findEmployeeStatus = this.statusKepegawaianList.find(x=> x.nama == this.selectedEmployee.employeeStatus);
           var findDepartemen = this.departemenList.find(x=> x.nama == this.selectedEmployee.departement);
           var findBank = this.bankList.find(x=> x.code == this.selectedEmployee.bankRekening);
-  
-  
-          console.log('patchValue | findMariageStatus ===>', findMariageStatus)
-          console.log('patchValue | findGender ===>', findGender)
-          console.log('patchValue | findPtkpStatus ===>', findPtkpStatus)
-          console.log('patchValue | findAgama ===>', findAgama)
-          console.log('patchValue | findEmployeeStatus ===>', findEmployeeStatus)
-          console.log('patchValue | findDepartemen ===>', findDepartemen)
-          console.log('patchValue | findBank ===>', findBank)
           
           this.dataPribadiForm.patchValue({
             marriageStatus: findMariageStatus,
@@ -170,6 +159,8 @@ export class EmployeeInputComponent implements OnInit {
           });
         }
       }
+      this.dataKepegawaianForm.disable();
+      this.dataPribadiForm.disable();
       this.uiBlockService.hideUiBlock();
     }, 500);
   }
@@ -309,60 +300,12 @@ export class EmployeeInputComponent implements OnInit {
       this.activeIndex = event;
   }
 
-  public findInvalidControls() {
-    const invalid = [];
-    const controls = this.dataPribadiForm.controls;
-    for (const name in controls) {
-        if (controls[name].invalid) {
-            invalid.push(name);
-        }
-    }
-    console.log('invalid inputForm ===>',invalid)
-
-    return invalid;
-}
-
-
   public simpan(){
-    
-    console.log('simpan ===>', this.dataPribadiForm.getRawValue(), this.dataKepegawaianForm.getRawValue());
-
-    // gabungin data pribadi dengan data kepegawaian sebagai basis data yang komplit untuk di simpan
-    var mergedData = Object.assign(this.dataPribadiForm.getRawValue(),this.dataKepegawaianForm.getRawValue());
-    mergedData.agama = ObjectHelper.isEmpty(this.dataPribadiForm.value.agama)? null : this.dataPribadiForm.value.agama.nama;
-    mergedData.marriageStatus = ObjectHelper.isEmpty(this.dataPribadiForm.value.marriageStatus)? null : this.dataPribadiForm.value.marriageStatus.nama;
-    mergedData.gender = ObjectHelper.isEmpty(this.dataPribadiForm.value.gender)? null : this.dataPribadiForm.value.gender.nama;
-    mergedData.ptkpStatus = ObjectHelper.isEmpty(this.dataPribadiForm.value.ptkpStatus)? null : this.dataPribadiForm.value.ptkpStatus.code;
-    mergedData.employeeStatus = ObjectHelper.isEmpty(this.dataKepegawaianForm.value.employeeStatus)? null : this.dataKepegawaianForm.value.employeeStatus.nama;
-    mergedData.departement = ObjectHelper.isEmpty(this.dataKepegawaianForm.value.departement)? null : this.dataKepegawaianForm.value.departement.nama;
-    mergedData.bankRekening = ObjectHelper.isEmpty(this.dataKepegawaianForm.value.bankRekening)? null : this.dataKepegawaianForm.value.bankRekening.code;
-    mergedData.id = ObjectHelper.isEmpty(this.selectedEmployee)? null : this.selectedEmployee.id;
-    var saveEmployee = new EmployeeCompleteModel(mergedData);
-    
-
-    if(ObjectHelper.isEmpty(this.selectedEmployee)){
-      var create = this.employeeService.createEmployee(saveEmployee);
-      if(!ObjectHelper.isEmpty(create)){
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data berhasil dibuat' });
-        this.batal();
-      }
-      console.log('create employee ===>', create);
-    }else{
-      var edit = this.employeeService.editEmployee(saveEmployee);
-      if(!ObjectHelper.isEmpty(create)){
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data berhasil diperbarui' });
-        this.batal();
-      }
-      console.log('edit employee ===>', edit);
-    }
-    
+    console.log('simpan ===>', this.dataPribadiForm.getRawValue(), this.dataKepegawaianForm.getRawValue())
   }
 
 
   public gotoNextTab(){
-
-    this.findInvalidControls();
-
     if(this.dataPribadiForm.invalid){
       this.messages = [{ 
         severity: 'warn', 

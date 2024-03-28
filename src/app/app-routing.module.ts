@@ -6,10 +6,10 @@ import { FakeService } from './resources/services/fake.service';
 
 const routes: Routes = [
 
+  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'employee',
-    // component: EmployeeComponent
     loadChildren: () =>
       import('src/app/views/employee/employee.module').then((m) => m.EmployeeModule),
   },
