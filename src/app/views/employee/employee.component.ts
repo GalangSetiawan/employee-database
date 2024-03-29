@@ -219,7 +219,7 @@ export class EmployeeComponent implements OnInit{
       this.employeeList.splice(findIdxData,1);
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data berhasil dihapus' });
 
-      // this.search();
+      this.search();
     }
 
   }

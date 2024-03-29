@@ -186,7 +186,7 @@ export class EmployeeInputComponent implements OnInit {
             domiciliKecamatan: findDomiciliKecamatan,
             domiciliKelurahan: findDomiciliKelurahan,
           });
-        }, 1000);
+        }, 2000);
 
         this.dataPribadiForm.patchValue({
           marriageStatus: findMariageStatus,
@@ -418,14 +418,12 @@ export class EmployeeInputComponent implements OnInit {
     if(ObjectHelper.isEmpty(this.selectedEmployee)){
       var create = this.employeeService.createEmployee(saveEmployee);
       if(!ObjectHelper.isEmpty(create)){
-        // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data berhasil dibuat' });
         this.snackbarService.show('Data berhasil dibuat')
         this.batal();
       }
     }else{
       var edit = this.employeeService.editEmployee(saveEmployee);
       if(!ObjectHelper.isEmpty(edit)){
-        // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data berhasil diperbarui' });
         this.snackbarService.show('Data berhasil diperbarui')
         this.batal();
       }
