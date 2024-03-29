@@ -7,15 +7,15 @@ import { BaseSharedModule } from './resources/base-shared.module';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './views/login/login.component';
 import { EmployeeModule } from './views/employee/employee.module';
 import { UiBlockModule } from './resources/components/ui-block/ui-block.module';
+import { FakeService } from './resources/services/fake.service';
+import { SnackbarModule } from './resources/components/snackbar/snackbar.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,11 +23,12 @@ import { UiBlockModule } from './resources/components/ui-block/ui-block.module';
     HttpClientModule,
     BrowserAnimationsModule,
     UiBlockModule,
-    // SnackbarModule,
+    SnackbarModule, 
     BaseSharedModule,
     EmployeeModule
   ],
   providers: [
+    FakeService
   ],
   bootstrap: [AppComponent]
 })

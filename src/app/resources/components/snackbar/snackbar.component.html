@@ -1,0 +1,8 @@
+<div #snackbar id="snackbar" (click)="dismiss()">
+  <p id="snackbar-message" [innerHTML]="message"></p>
+  <button tabindex="-1" mat-icon-button id="snackbar-dismiss" (click)="dismiss()">
+    <!-- <mat-icon>clear</mat-icon> -->
+    <a class="uk-icon-link" uk-icon="close"></a>
+
+  </button>
+</div>

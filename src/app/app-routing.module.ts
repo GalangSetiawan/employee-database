@@ -3,16 +3,27 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './views/login/login.component';
 import { FakeService } from './resources/services/fake.service';
+import { AppComponent } from './app.component';
+import { ContainerMenuComponent } from './views/container-menu/container-menu.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 
-  { path: '', component: LoginComponent },
+
   {
-    path: 'employee',
-    loadChildren: () =>
-      import('src/app/views/employee/employee.module').then((m) => m.EmployeeModule),
+    path: '',
+    component: AppComponent,
+    children: [
+      
+      {
+        path: '',
+        loadChildren: () => import('src/app/views/container-menu/container-menu.module').then(m => m.ContainerMenuModule),
+      },
+
+    ]
   },
 
+  
 
   // otherwise redirect to home
   { path: '**', redirectTo: 'login' }

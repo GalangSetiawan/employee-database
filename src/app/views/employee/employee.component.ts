@@ -27,13 +27,12 @@ export class EmployeeComponent implements OnInit{
   public filterForm!: FormGroup;
   public statusKepegawaianList: StatusKepegawaianModel[] = [];
   public departemenList: GlobalDataModel[] = [];
-
-  public showCardView = true;
   public currentPageItem: EmployeeCompleteModel[] = [];
   public arrPagination:any = []
-  public currentPage = 1;
   public showingMaxDataInOnePage = {value: 10} ;
   public arrShowingMaxData = [{value: 5},{value: 10},{value: 20},{value: 50},{value: 100}]
+  public first = 0;
+  public page: number = 1;
 
   constructor(
     private fb: FormBuilder,
@@ -57,7 +56,7 @@ export class EmployeeComponent implements OnInit{
     this.initStatusKepegawaian();
 
     this.pagination(1);
-    $('#pagination #nextBtn').addClass('customColor')
+    this.restoreFilterSearchParameter();
 
 
   }
@@ -69,7 +68,23 @@ export class EmployeeComponent implements OnInit{
       departement: null,
       position: null,
       employeeStatus: null,
+      showCardView: true,
+      currentPage: 1
     });
+  }
+
+  public restoreFilterSearchParameter(){
+    var filterBrowseSaved = SessionHelper.getItemAndDestroy('FILTER_BROWSE');
+    if(!ObjectHelper.isEmpty(filterBrowseSaved)){
+      this.filterForm.patchValue(filterBrowseSaved);
+
+      this.search(this.filterForm.value.currentPage);
+    }
+  }
+
+  public paginate(event: any) {
+    this.first = event.first;
+    this.page = event.first / event.rows + 1;
   }
 
   public initDepartemen(){
@@ -95,6 +110,7 @@ export class EmployeeComponent implements OnInit{
 
   public input(){
     this.router.navigate(['/employee/input']);
+    SessionHelper.setItem('FILTER_BROWSE', this.filterForm.value);
   }
 
   public edit(rowData: EmployeeCompleteModel){
@@ -111,10 +127,8 @@ export class EmployeeComponent implements OnInit{
     this.router.navigate(['./view'], { relativeTo: this.activatedRoute }); 
   }
 
-  
-
   public pagination(page:any){
-    this.currentPage = page;
+    this.filterForm.patchValue({ currentPage: page});
     this.arrPagination = [];
     this.currentPageItem = [];
     var itemInPage = this.showingMaxDataInOnePage.value;
@@ -122,42 +136,30 @@ export class EmployeeComponent implements OnInit{
     this.arrPagination = arr.map( function(e,i){ 
         return i%itemInPage===0 ? arr.slice(i,i+itemInPage) : null; 
     }).filter(function(e){ return e; });
+
     this.currentPageItem = this.arrPagination[parseInt(page)-1]
   }
 
-  prevPage(){
-    if(this.currentPage == 1) this.currentPage = 1
-    else this.currentPage -= 1
-    console.log('prev page | currentPage ===>',this.currentPage);
-    this.pagination(this.currentPage);
-    if(this.currentPage == 1){
-      $('#pagination #prevBtn').removeClass('customColor');
-      $('#pagination #nextBtn').addClass('customColor');
-    }else{
-      $('#pagination #prevBtn').addClass('customColor');
-      $('#pagination #nextBtn').addClass('customColor');
+  public prevPage(){
+    if(this.filterForm.value.currentPage == 1){
+      this.filterForm.patchValue({ currentPage: 1});
+    } else {
+      this.filterForm.patchValue({ currentPage: this.filterForm.value.currentPage -= 1 })
     }
+    this.pagination(this.filterForm.value.currentPage);
   }
-
-
   
-  nextPage(){
-    if(this.currentPage == this.arrPagination.length) this.currentPage = this.arrPagination.length
-    else this.currentPage += 1
-    this.pagination(this.currentPage);
-    if(this.currentPage == this.arrPagination.length){
-      $('#pagination #nextBtn').removeClass('customColor');
-      $('#pagination #prevBtn').addClass('customColor');
-    }else{
-      $('#pagination #nextBtn').addClass('customColor');
-      $('#pagination #prevBtn').addClass('customColor');
-
+  public nextPage(){
+    if(this.filterForm.value.currentPage == this.arrPagination.length){
+      this.filterForm.patchValue({ currentPage: this.arrPagination.length });  
+    } else{
+      this.filterForm.patchValue({ currentPage: this.filterForm.value.currentPage += 1 })
     }
+    this.pagination(this.filterForm.value.currentPage);
   }
 
   
-
-  public search() {
+  public search(currentPage = 1) {
     this.uiBlockService.showUiBlock();
     setTimeout(() => {
 
@@ -166,7 +168,6 @@ export class EmployeeComponent implements OnInit{
       var filterJabatan = this.filterForm.value.position;
       var filterDepartemen = ObjectHelper.isEmpty(this.filterForm.value.departement)? null : this.filterForm.value.departement.nama;
       var filterStatusKepegawaian = ObjectHelper.isEmpty(this.filterForm.value.employeeStatus)? null : this.filterForm.value.employeeStatus.nama;
-
 
       this.filteredEmployee = this.employeeList;
 
@@ -190,7 +191,7 @@ export class EmployeeComponent implements OnInit{
         this.filteredEmployee = this.filteredEmployee.filter( x=> x.employeeStatus.includes(filterStatusKepegawaian));
       }
 
-      this.pagination(1);
+      this.pagination(currentPage);
 
       this.uiBlockService.hideUiBlock();
     }, 500);

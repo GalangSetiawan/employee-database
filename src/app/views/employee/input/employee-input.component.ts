@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FakeService } from 'src/app/resources/services/fake.service';
 import { EmployeeService } from 'src/app/resources/services/employee.service';
-import { MenuItem, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GenderModel } from 'src/app/resources/data-model/gender.model';
 import { AgamaModel } from 'src/app/resources/data-model/agama.model';
@@ -23,7 +23,7 @@ import { UiBlockService } from 'src/app/resources/components/ui-block/ui-block.s
   selector: 'app-employee-input',
   templateUrl: './employee-input.component.html',
   styleUrls: ['./employee-input.component.scss'],
-  providers: [MessageService]
+  providers: [ConfirmationService, MessageService]
 
 })
 export class EmployeeInputComponent implements OnInit {
@@ -41,6 +41,9 @@ export class EmployeeInputComponent implements OnInit {
   public statusKepegawaianList: StatusKepegawaianModel[] = [];
   public departemenList: GlobalDataModel[] = [];
   public bankList: BankModel[] = [];
+  public screenMode = 'input;'
+
+  public maxDate: Date = new Date();
 
   public provinsiList: GlobalDataModel[] = [];
   public kabupatenList: GlobalDataModel[] = [];
@@ -56,6 +59,7 @@ export class EmployeeInputComponent implements OnInit {
     private fb: FormBuilder,
     private fakeService: FakeService,
     private employeeService: EmployeeService,
+    private confirmationService: ConfirmationService, 
     private uiBlockService: UiBlockService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -85,9 +89,46 @@ export class EmployeeInputComponent implements OnInit {
       },
     ];
 
-
     this.patchValueFromBrowse();
+    this.saveDraftOnLocale();
   }
+
+  public saveDraftOnLocale(){
+
+    if (this.router.url.includes('employee/input')) {
+      this.confirmUseDraftAsCurrentInput();
+
+      setInterval(
+        () => {
+          SessionHelper.setItem('DRAFT_INPUT_KARYAWAN_DATA_KEPEGAWAIAN', this.dataKepegawaianForm.getRawValue());
+          SessionHelper.setItem('DRAFT_INPUT_KARYAWAN_DATA_PRIBADI', this.dataPribadiForm.getRawValue());
+        }, 1000
+      );
+    }
+  }
+
+  public confirmUseDraftAsCurrentInput(){
+
+    var isExistInputDraftDataKepegawaian = SessionHelper.getItemAndDestroy('DRAFT_INPUT_KARYAWAN_DATA_KEPEGAWAIAN');
+    var isExistInputDraftDataPribadi = SessionHelper.getItemAndDestroy('DRAFT_INPUT_KARYAWAN_DATA_PRIBADI');
+
+    if(!ObjectHelper.isEmpty(isExistInputDraftDataKepegawaian)){
+      this.confirmationService.confirm({
+        message: 'Apakah Anda ingin melanjutkan pengisian data karyawan dengan data draft yang ada?',
+        header: 'Konfirmasi pengisian data',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+          this.dataKepegawaianForm.patchValue(isExistInputDraftDataKepegawaian);
+          this.dataPribadiForm.patchValue(isExistInputDraftDataPribadi);
+        },
+        reject: (type:any) => {
+            
+        }
+      });
+    }
+  }
+
+
 
   public initForm(){
     this.dataPribadiForm = this.fb.group({
@@ -137,66 +178,67 @@ export class EmployeeInputComponent implements OnInit {
 
     this.uiBlockService.showUiBlock();
     setTimeout(() => {
-      if (!this.router.url.includes('employee/input')) {
-        if(!ObjectHelper.isEmpty(this.selectedEmployee)){
+      if(!ObjectHelper.isEmpty(this.selectedEmployee)){
+        this.screenMode = 'edit'
+      
+        this.dataPribadiForm.patchValue(this.selectedEmployee);
+        this.dataKepegawaianForm.patchValue(this.selectedEmployee);
+  
+        // patch value untuk data dengan form input berjenis dropdown
+        var findMariageStatus = this.statusPernikahanList.find(x=> x.nama == this.selectedEmployee.marriageStatus);
+        var findGender = this.jenisKelaminList.find(x=> x.nama == this.selectedEmployee.gender);
+        var findPtkpStatus = this.statusPtkpList.find(x=> x.code == this.selectedEmployee.ptkpStatus);
+        var findAgama = this.agamaList.find(x=> x.nama == this.selectedEmployee.agama);
         
-          this.dataPribadiForm.patchValue(this.selectedEmployee);
-          this.dataKepegawaianForm.patchValue(this.selectedEmployee);
-    
-          // patch value untuk data dengan form input berjenis dropdown
-          var findMariageStatus = this.statusPernikahanList.find(x=> x.nama == this.selectedEmployee.marriageStatus);
-          var findGender = this.jenisKelaminList.find(x=> x.nama == this.selectedEmployee.gender);
-          var findPtkpStatus = this.statusPtkpList.find(x=> x.code == this.selectedEmployee.ptkpStatus);
-          var findAgama = this.agamaList.find(x=> x.nama == this.selectedEmployee.agama);
-          
-          var findEmployeeStatus = this.statusKepegawaianList.find(x=> x.nama == this.selectedEmployee.employeeStatus);
-          var findDepartemen = this.departemenList.find(x=> x.nama == this.selectedEmployee.departement);
-          var findBank = this.bankList.find(x=> x.name == this.selectedEmployee.bankRekening);
-          
+        var findEmployeeStatus = this.statusKepegawaianList.find(x=> x.nama == this.selectedEmployee.employeeStatus);
+        var findDepartemen = this.departemenList.find(x=> x.nama == this.selectedEmployee.departement);
+        var findBank = this.bankList.find(x=> x.name == this.selectedEmployee.bankRekening);
+        
 
-          // cari alamat KTP
-          this.getKabupaten(this.selectedEmployee.idProvinsi); 
-          this.getKecamatan(this.selectedEmployee.idKabupaten); 
-          this.getKelurahan(this.selectedEmployee.idKecamatan); 
-          this.getKabupaten(this.selectedEmployee.domiciliProvinsi, true);
-          this.getKecamatan(this.selectedEmployee.domiciliKabupaten, true);
-          this.getKelurahan(this.selectedEmployee.domiciliKecamatan, true);
+        // cari alamat KTP
+        this.getKabupaten(this.selectedEmployee.idProvinsi); 
+        this.getKecamatan(this.selectedEmployee.idKabupaten); 
+        this.getKelurahan(this.selectedEmployee.idKecamatan); 
+        this.getKabupaten(this.selectedEmployee.domiciliProvinsi, true);
+        this.getKecamatan(this.selectedEmployee.domiciliKabupaten, true);
+        this.getKelurahan(this.selectedEmployee.domiciliKecamatan, true);
 
-          setTimeout(() => {
-            var findidProvinsi = this.provinsiList.find(x=> x.id == this.selectedEmployee.idProvinsi);
-            var findidKabupaten = this.kabupatenList.find(x=> x.id == this.selectedEmployee.idKabupaten);
-            var findidKecamatan = this.kecamatanList.find(x=> x.id == this.selectedEmployee.idKecamatan);
-            var findidKelurahan = this.kelurahanList.find(x=> x.id == this.selectedEmployee.idKelurahan);
-            var findDomiciliProvinsi = this.provinsiDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliProvinsi);
-            var findDomiciliKabupaten = this.kabupatenDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliKabupaten);
-            var findDomiciliKecamatan = this.kecamatanDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliKecamatan);
-            var findDomiciliKelurahan = this.kelurahanDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliKelurahan);
-
-            this.dataPribadiForm.patchValue({
-              idProvinsi: findidProvinsi,
-              idKabupaten: findidKabupaten,
-              idKecamatan: findidKecamatan,
-              idKelurahan: findidKelurahan,
-              domiciliProvinsi: findDomiciliProvinsi,
-              domiciliKabupaten: findDomiciliKabupaten,
-              domiciliKecamatan: findDomiciliKecamatan,
-              domiciliKelurahan: findDomiciliKelurahan,
-            });
-          }, 1000);
+        setTimeout(() => {
+          var findidProvinsi = this.provinsiList.find(x=> x.id == this.selectedEmployee.idProvinsi);
+          var findidKabupaten = this.kabupatenList.find(x=> x.id == this.selectedEmployee.idKabupaten);
+          var findidKecamatan = this.kecamatanList.find(x=> x.id == this.selectedEmployee.idKecamatan);
+          var findidKelurahan = this.kelurahanList.find(x=> x.id == this.selectedEmployee.idKelurahan);
+          var findDomiciliProvinsi = this.provinsiDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliProvinsi);
+          var findDomiciliKabupaten = this.kabupatenDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliKabupaten);
+          var findDomiciliKecamatan = this.kecamatanDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliKecamatan);
+          var findDomiciliKelurahan = this.kelurahanDomisiliList.find(x=> x.id == this.selectedEmployee.domiciliKelurahan);
 
           this.dataPribadiForm.patchValue({
-            marriageStatus: findMariageStatus,
-            gender: findGender,
-            ptkpStatus: findPtkpStatus,
-            agama: findAgama,
+            idProvinsi: findidProvinsi,
+            idKabupaten: findidKabupaten,
+            idKecamatan: findidKecamatan,
+            idKelurahan: findidKelurahan,
+            domiciliProvinsi: findDomiciliProvinsi,
+            domiciliKabupaten: findDomiciliKabupaten,
+            domiciliKecamatan: findDomiciliKecamatan,
+            domiciliKelurahan: findDomiciliKelurahan,
           });
-    
-          this.dataKepegawaianForm.patchValue({
-            employeeStatus: findEmployeeStatus,
-            departement: findDepartemen,
-            bankRekening: findBank,
-          });
-        }
+        }, 1000);
+
+        this.dataPribadiForm.patchValue({
+          marriageStatus: findMariageStatus,
+          gender: findGender,
+          ptkpStatus: findPtkpStatus,
+          agama: findAgama,
+        });
+  
+        this.dataKepegawaianForm.patchValue({
+          employeeStatus: findEmployeeStatus,
+          departement: findDepartemen,
+          bankRekening: findBank,
+        });
+      }else{
+        this.screenMode = 'input'
       }
       this.uiBlockService.hideUiBlock();
     }, 500);
@@ -387,6 +429,9 @@ export class EmployeeInputComponent implements OnInit {
 
 
   public simpan(){
+
+    SessionHelper.destroy('DRAFT_INPUT_KARYAWAN_DATA_KEPEGAWAIAN');
+    SessionHelper.destroy('DRAFT_INPUT_KARYAWAN_DATA_PRIBADI');
     
     console.log('simpan ===>', this.dataPribadiForm.getRawValue(), this.dataKepegawaianForm.getRawValue());
 
@@ -444,6 +489,8 @@ export class EmployeeInputComponent implements OnInit {
 
   public batal(){
     SessionHelper.destroy('EMPLOYEE_FROM_BROWSE');
+    SessionHelper.destroy('DRAFT_INPUT_KARYAWAN_DATA_KEPEGAWAIAN');
+    SessionHelper.destroy('DRAFT_INPUT_KARYAWAN_DATA_PRIBADI');
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 }

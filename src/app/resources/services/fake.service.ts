@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { SessionHelper } from '../helper/session-helper';
 
 @Injectable()
 export class FakeService {
@@ -9,15 +10,20 @@ export class FakeService {
   constructor(private http: HttpClient) { }
 
   public checkIsUserLogin(){
+    var isLogin = SessionHelper.getItem('USER_HAS_LOGGED_IN');
+    this.isUserLogin = isLogin;
     return this.isUserLogin;
   }
 
   public setLoggedIn(){
     this.isUserLogin = true;
+    SessionHelper.setItem('USER_HAS_LOGGED_IN', this.isUserLogin);
   }
 
   public logout(){
     this.isUserLogin = false;
+    SessionHelper.destroy('USER_HAS_LOGGED_IN');
+
   }
 
   public getFakeLoginCredential() {

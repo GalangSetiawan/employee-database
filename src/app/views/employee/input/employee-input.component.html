@@ -1,15 +1,20 @@
 <p-toast></p-toast>
-    
+<p-confirmDialog [style]="{width: '50vw', minWidth: '420px'}"></p-confirmDialog>
+
+<div class="uk-heading-small">
+  <span *ngIf="screenMode == 'input'">Input data karyawan</span>
+  <span *ngIf="screenMode == 'edit'">Edit data karyawan</span>
+</div>
 
 <div class="row">
     <div class="col-md-4">
       <div class="uk-card ">
-        <h3 class="uk-card-title">
+        <h4 class="uk-card-title">
           <span *ngIf="activeIndex == 0">Data pribadi</span>
           <span *ngIf="activeIndex == 1">Data kepegawaian</span>
-        </h3>
+        </h4>
         <p *ngIf="activeIndex == 0">Mohon lengkapi data yang wajib diisi sebelum pindah ke halaman selanjutnya.</p>
-        <p *ngIf="activeIndex == 1">Mohon lengkapi data yang wajib diisi sebelum simpan data.</p>
+        <p *ngIf="activeIndex == 1">Mohon lengkapi data yang wajib diisi untuk dapat menyimpan data.</p>
     </div>
     </div>
     <div class="col-md-8">
@@ -28,7 +33,7 @@
     <div class="col-md-12">
 
       <div class="uk-card uk-card-default uk-card-body uk-width-1-1@m">
-          <h3 class="uk-card-title">Biodata</h3>
+          <h4 class="uk-card-title">Biodata</h4>
           
 
 
@@ -81,6 +86,7 @@
                           <p-calendar 
                               id="birthDate"
                               formControlName="birthDate"
+                              [maxDate]="maxDate"
                               appendTo="body"
                               [showIcon]="true">
                           </p-calendar>
@@ -152,7 +158,7 @@
                   <div class="col-md-4">
                     <div class="p-field ">
                       <span class="p-float-label">
-                        <input type="text" id="identityNumber" pInputText placeholder="16 digit nomor KTP" formControlName="identityNumber"> 
+                        <p-inputMask mask="9999999999999999" formControlName="identityNumber"  placeholder="16 digit nomor KTP"></p-inputMask>
                         <label for="identityNumber">Nomor KTP *</label>
                       </span>
                     </div>
@@ -191,7 +197,7 @@
     <div class="col-md-12">
 
         <div class="uk-card uk-card-default uk-card-body uk-width-1-1@m">
-            <h3 class="uk-card-title">Informasi kontak</h3>
+            <h4 class="uk-card-title">Informasi kontak</h4>
             
 
 
@@ -256,6 +262,8 @@
                               name="idProvinsi"
                               formControlName="idProvinsi"
                               (onChange)="onProvinsiChange($event)"
+                              [filter]="true" 
+                              filterBy="nama"
                               [showClear]="true"
                               appendTo="body"
                               [options]="provinsiList"
@@ -277,6 +285,8 @@
                               name="idKabupaten"
                               formControlName="idKabupaten"
                               (onChange)="onKabupatenChange($event)"
+                              [filter]="true" 
+                              filterBy="nama"
                               [showClear]="true"
                               appendTo="body"
                               [options]="kabupatenList"
@@ -298,6 +308,8 @@
                               name="idKecamatan"
                               formControlName="idKecamatan"
                               (onChange)="onKecamatanChange($event)"
+                              [filter]="true" 
+                              filterBy="nama"
                               [showClear]="true"
                               appendTo="body"
                               [options]="kecamatanList"
@@ -318,6 +330,8 @@
                               id="idKelurahan"
                               name="idKelurahan"
                               formControlName="idKelurahan"
+                              [filter]="true" 
+                              filterBy="nama"
                               [showClear]="true"
                               appendTo="body"
                               [options]="kelurahanList"
@@ -355,6 +369,8 @@
                               name="domiciliProvinsi"
                               formControlName="domiciliProvinsi"
                               (onChange)="onProvinsiChange($event, true)"
+                              [filter]="true" 
+                              filterBy="nama"
                               [showClear]="true"
                               appendTo="body"
                               [options]="provinsiDomisiliList"
@@ -376,6 +392,8 @@
                               name="domiciliKabupaten"
                               formControlName="domiciliKabupaten"
                               (onChange)="onKabupatenChange($event, true)"
+                              [filter]="true" 
+                              filterBy="nama"
                               [showClear]="true"
                               appendTo="body"
                               [options]="kabupatenDomisiliList"
@@ -397,6 +415,8 @@
                               name="domiciliKecamatan"
                               formControlName="domiciliKecamatan"
                               (onChange)="onKecamatanChange($event, true)"
+                              [filter]="true" 
+                              filterBy="nama"
                               [showClear]="true"
                               appendTo="body"
                               [options]="kecamatanDomisiliList"
@@ -417,6 +437,8 @@
                               id="domiciliKelurahan"
                               name="domiciliKelurahan"
                               formControlName="domiciliKelurahan"
+                              [filter]="true" 
+                              filterBy="nama"
                               [showClear]="true"
                               appendTo="body"
                               [options]="kelurahanDomisiliList"
@@ -464,7 +486,7 @@
 
       <div class="uk-card uk-card-default uk-card-body uk-width-1-1@m">
 
-        <h3 class="uk-card-title">Data kepegawaian</h3>
+        <h4 class="uk-card-title">Data kepegawaian</h4>
         <form [formGroup]="dataKepegawaianForm">
 
           <div class="row">
@@ -553,6 +575,8 @@
                     id="departement"
                     name="departement"
                     formControlName="departement"
+                    [filter]="true" 
+                    filterBy="nama"
                     [showClear]="true"
                     appendTo="body"
                     [options]="departemenList"
@@ -577,7 +601,7 @@
 
       <div class="uk-card uk-card-default uk-card-body uk-width-1-1@m">
 
-        <h3 class="uk-card-title">Data penggajian</h3>
+        <h4 class="uk-card-title">Data penggajian</h4>
         <form [formGroup]="dataKepegawaianForm">
 
           <div class="row">
@@ -599,6 +623,8 @@
                     id="bankRekening"
                     name="bankRekening"
                     formControlName="bankRekening"
+                    [filter]="true" 
+                    filterBy="nama"
                     [showClear]="true"
                     appendTo="body"
                     [options]="bankList"
@@ -622,7 +648,7 @@
             <div class="col-md-4">
               <div class="p-field ">
                 <span class="p-float-label">
-                  <p-inputNumber formControlName="nomorRekening" inputId="nomorRekening"> </p-inputNumber>
+                  <p-inputNumber formControlName="nomorRekening" [useGrouping]="false" inputId="nomorRekening"> </p-inputNumber>
                   <label for="nomorRekening">Nomor rekening *</label>
                 </span>
               </div>

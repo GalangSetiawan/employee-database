@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark px-3">
+    <div class="navbar-nav">
+        <!-- <a class="nav-item nav-link" routerLink="/">Home</a> -->
+        <a class="nav-item nav-link" routerLink="/login" *ngIf="!isLoggedIn">Login</a>
+        <a class="nav-item nav-link" routerLink="/login" (click)="logout();" *ngIf="isLoggedIn">Logout</a>
+        <a class="nav-item nav-link" routerLink="/employee" (click)="employeeAkses()" >Employee</a>
+    </div>
+</nav>
+<p-toast></p-toast>
+
+  
+<div style="height: calc(100vh - 56px); overflow: auto;">
+    <div class="container pt-3" *ngIf="isLoggedIn">
+        <router-outlet></router-outlet>
+    </div>
+    <div class="container" *ngIf="!isLoggedIn">
+        <app-login (informParent)="parentWillTakeAction($event)"></app-login>
+    </div>
+</div>

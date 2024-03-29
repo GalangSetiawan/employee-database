@@ -2,34 +2,65 @@
     "data":[
       {
         "id": "6604d4e8d9fac82f4f3dae75",
-        "nama": "Central operations"
+        "nama": "Central Operations Department"
       },
       {
         "id": "6604d4e8fe63c5c0dc645fd9",
-        "nama": "Credit"
+        "nama": "Credit Department"
       },
       {
         "id": "6604d4e8e59d3a371045f69d",
-        "nama": "Financial"
+        "nama": "Financial Department"
       },
       {
         "id": "6604d4e89829d3ab3cbc7289",
-        "nama": "Information security"
+        "nama": "Human Resources Department"
       },
       {
         "id": "6604d4e84ac196ede1f59d43",
-        "nama": "Information technology"
+        "nama": "Information Security Department"
       },
       {
         "id": "6604d4e8d3f874b8c39627d1",
-        "nama": "Legal"
+        "nama": "Information Technology"
       },
       {
         "id": "6604d4e89cf22cf11e7c6636",
-        "nama": "Risk management"
+        "nama": "Internal Legal Control and Audit Department"
+      },
+      {
+        "id": "6604d4e89cf22cf11e7c6636",
+        "nama": "Legal Compliance and Compliance Control Division "
+      },
+      {
+        "id": "6604d4e89cf22cf11e7c6636",
+        "nama": "Legal Department"
+      },
+      {
+        "id": "6604d4e89cf22cf11e7c6636",
+        "nama": "Money Laundering and Terrorist Financing Reporting Section "
+      },
+      {
+        "id": "6604d4e89cf22cf11e7c6636",
+        "nama": "Risk Management Department"
+      },
+      {
+        "id": "6604d4e89cf22cf11e7c6636",
+        "nama": "Treasury and Investment Department"
       }
     ]
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
