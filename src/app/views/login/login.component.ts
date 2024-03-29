@@ -71,7 +71,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-
   public login(){
     this.router.navigate(['./employee']);
     this.fakeService.setLoggedIn();
@@ -82,8 +81,6 @@ export class LoginComponent implements OnInit {
     this.fakeService.getFakeLoginCredential()
       .subscribe((result: any) => {
         this.validLoginCredential = result.data
-        console.log('getValidLoginCredential ===>',this.validLoginCredential)
-        console.log('isLoggedIn? ===>',this.fakeService.checkIsUserLogin())
     });
   }
   

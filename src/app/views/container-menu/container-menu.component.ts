@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { SnackBarService } from 'src/app/resources/components/snackbar/snackbar.service';
+import { LoginCredentialModel } from 'src/app/resources/data-model/login.model';
 import { FakeService } from 'src/app/resources/services/fake.service';
 
 @Component({
@@ -12,7 +13,7 @@ import { FakeService } from 'src/app/resources/services/fake.service';
 })
 export class ContainerMenuComponent implements OnInit{
   public isLoggedIn = false;
-  messageFromChild: string = '';
+  public currentUserLogin:LoginCredentialModel | any = null;
 
   constructor(
     private fakeService: FakeService,
@@ -25,7 +26,6 @@ export class ContainerMenuComponent implements OnInit{
 
   ngOnInit(): void {
     this.isLoggedIn = this.fakeService.checkIsUserLogin()
-    console.log('cek login ===>', this.isLoggedIn )
   }
 
   public employeeAkses(){
@@ -38,11 +38,22 @@ export class ContainerMenuComponent implements OnInit{
     this.isLoggedIn = this.fakeService.checkIsUserLogin();
   }
 
-  parentWillTakeAction(isLoggedIn:boolean){
+  public getUserLogin(){
+    this.fakeService.getFakeLoginCredential()
+      .subscribe((result: any) => {
+        this.currentUserLogin = result.data;
+
+        this.messageService.add({ severity: 'success', summary: 'Login berhasil', detail: 'Hi '+ this.currentUserLogin.name +', have a nice day' });
+
+    });
+  }
+
+  public parentWillTakeAction(isLoggedIn:boolean){
     this.isLoggedIn = isLoggedIn;
     
     if(this.isLoggedIn){
-      this.messageService.add({ severity: 'success', summary: 'Selamat datang', detail: 'Welcome my baby boy' });
+      this.getUserLogin();
     }
+
   }
 }

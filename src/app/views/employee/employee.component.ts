@@ -111,6 +111,7 @@ export class EmployeeComponent implements OnInit{
   public input(){
     this.router.navigate(['/employee/input']);
     SessionHelper.setItem('FILTER_BROWSE', this.filterForm.value);
+    SessionHelper.destroy('EMPLOYEE_FROM_BROWSE');
   }
 
   public edit(rowData: EmployeeCompleteModel){

@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '50vw', minWidth: '420px'}"></p-confirmDialog>
 
-<div class="uk-heading-small">
+<div class="uk-heading-small" id="title-input">
   <span *ngIf="screenMode == 'input'">Input data karyawan</span>
   <span *ngIf="screenMode == 'edit'">Edit data karyawan</span>
 </div>
@@ -26,7 +26,6 @@
 
 <ng-container *ngIf="activeIndex == 0">
 
-  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
 
 
   <div class="row mt-4">
@@ -465,6 +464,9 @@
     </div>
   </div>
 
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+  
   <div class="row mt-3 mb-3">
     <div class="col-md-3">
       <button id="btnSearch" pButton pRipple class="p-button" (click)="gotoNextTab()"> 
