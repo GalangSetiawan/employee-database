@@ -18,6 +18,7 @@ import { SessionHelper } from 'src/app/resources/helper/session-helper';
 import { EmployeeCompleteModel } from 'src/app/resources/data-model/employee-complete.model';
 import { StatusPtkpModel } from 'src/app/resources/data-model/status-ptkp.model';
 import { UiBlockService } from 'src/app/resources/components/ui-block/ui-block.service';
+import { SnackBarService } from 'src/app/resources/components/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-employee-input',
@@ -64,6 +65,7 @@ export class EmployeeInputComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private api: ApiService,
+    private snackbarService: SnackBarService, 
     private messageService: MessageService) {
 
       this.initJenisKelamin();
@@ -90,45 +92,7 @@ export class EmployeeInputComponent implements OnInit {
     ];
 
     this.patchValueFromBrowse();
-    this.saveDraftOnLocale();
   }
-
-  public saveDraftOnLocale(){
-
-    if (this.router.url.includes('employee/input')) {
-      this.confirmUseDraftAsCurrentInput();
-
-      setInterval(
-        () => {
-          SessionHelper.setItem('DRAFT_INPUT_KARYAWAN_DATA_KEPEGAWAIAN', this.dataKepegawaianForm.getRawValue());
-          SessionHelper.setItem('DRAFT_INPUT_KARYAWAN_DATA_PRIBADI', this.dataPribadiForm.getRawValue());
-        }, 1000
-      );
-    }
-  }
-
-  public confirmUseDraftAsCurrentInput(){
-
-    var isExistInputDraftDataKepegawaian = SessionHelper.getItemAndDestroy('DRAFT_INPUT_KARYAWAN_DATA_KEPEGAWAIAN');
-    var isExistInputDraftDataPribadi = SessionHelper.getItemAndDestroy('DRAFT_INPUT_KARYAWAN_DATA_PRIBADI');
-
-    if(!ObjectHelper.isEmpty(isExistInputDraftDataKepegawaian)){
-      this.confirmationService.confirm({
-        message: 'Apakah Anda ingin melanjutkan pengisian data karyawan dengan data draft yang ada?',
-        header: 'Konfirmasi pengisian data',
-        icon: 'pi pi-info-circle',
-        accept: () => {
-          this.dataKepegawaianForm.patchValue(isExistInputDraftDataKepegawaian);
-          this.dataPribadiForm.patchValue(isExistInputDraftDataPribadi);
-        },
-        reject: (type:any) => {
-            
-        }
-      });
-    }
-  }
-
-
 
   public initForm(){
     this.dataPribadiForm = this.fb.group({
@@ -174,7 +138,6 @@ export class EmployeeInputComponent implements OnInit {
 
   public patchValueFromBrowse(){
     this.selectedEmployee = SessionHelper.getItem('EMPLOYEE_FROM_BROWSE');
-    console.log('url =>', this.router.url, this.selectedEmployee);
 
     this.uiBlockService.showUiBlock();
     setTimeout(() => {
@@ -429,12 +392,7 @@ export class EmployeeInputComponent implements OnInit {
 
 
   public simpan(){
-
-    SessionHelper.destroy('DRAFT_INPUT_KARYAWAN_DATA_KEPEGAWAIAN');
-    SessionHelper.destroy('DRAFT_INPUT_KARYAWAN_DATA_PRIBADI');
     
-    console.log('simpan ===>', this.dataPribadiForm.getRawValue(), this.dataKepegawaianForm.getRawValue());
-
     // gabungin data pribadi dengan data kepegawaian sebagai basis data yang komplit untuk di simpan
     var mergedData = Object.assign(this.dataPribadiForm.getRawValue(),this.dataKepegawaianForm.getRawValue());
     mergedData.agama = ObjectHelper.isEmpty(this.dataPribadiForm.value.agama)? null : this.dataPribadiForm.value.agama.nama;
@@ -460,18 +418,19 @@ export class EmployeeInputComponent implements OnInit {
     if(ObjectHelper.isEmpty(this.selectedEmployee)){
       var create = this.employeeService.createEmployee(saveEmployee);
       if(!ObjectHelper.isEmpty(create)){
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data berhasil dibuat' });
+        // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data berhasil dibuat' });
+        this.snackbarService.show('Data berhasil dibuat')
         this.batal();
       }
     }else{
       var edit = this.employeeService.editEmployee(saveEmployee);
-      if(!ObjectHelper.isEmpty(create)){
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data berhasil diperbarui' });
+      if(!ObjectHelper.isEmpty(edit)){
+        // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data berhasil diperbarui' });
+        this.snackbarService.show('Data berhasil diperbarui')
         this.batal();
       }
     }  
   }
-
 
   public gotoNextTab(){
 
@@ -489,8 +448,6 @@ export class EmployeeInputComponent implements OnInit {
 
   public batal(){
     SessionHelper.destroy('EMPLOYEE_FROM_BROWSE');
-    SessionHelper.destroy('DRAFT_INPUT_KARYAWAN_DATA_KEPEGAWAIAN');
-    SessionHelper.destroy('DRAFT_INPUT_KARYAWAN_DATA_PRIBADI');
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 }

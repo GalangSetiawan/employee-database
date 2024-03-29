@@ -1,8 +1,25 @@
-<div #snackbar id="snackbar" (click)="dismiss()">
-  <p id="snackbar-message" [innerHTML]="message"></p>
-  <button tabindex="-1" mat-icon-button id="snackbar-dismiss" (click)="dismiss()">
-    <!-- <mat-icon>clear</mat-icon> -->
-    <a class="uk-icon-link" uk-icon="close"></a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.19.2/dist/css/uikit.min.css" />
 
-  </button>
+
+<div #snackbar id="snackbar" (click)="dismiss()">
+  <table style="width: 100%">
+    <tr>
+      <td style="width: 30px">
+        <span uk-icon="icon: check; ratio: 2"></span>
+
+      </td>
+      <td style="text-align: left; padding-left: 10px;">
+        <div class="p-toast-summary" style="margin-bottom: 5px; font-size: 1rem"><b>Success</b></div>
+        <p style="font-size: 1rem" id="snackbar-message" [innerHTML]="message"></p>
+      </td>
+      <td style="vertical-align: baseline; text-align: right">
+        <span uk-icon="icon: close;" (click)="dismiss()"></span>
+
+      </td>
+
+    </tr>
+  </table>
+
 </div>
+
+
