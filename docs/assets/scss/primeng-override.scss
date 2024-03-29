@@ -1,5 +1,69 @@
-.p-float-label {
-    display: block;
-    position: relative;
-    margin-bottom: 20px;
+
+
+.p-float-label input:focus ~ label,.p-float-label input.p-filled ~ label,.p-float-label textarea:focus ~ label,.p-float-label textarea.p-filled ~ label,.p-float-label .p-inputwrapper-focus ~ label,.p-float-label .p-inputwrapper-filled ~ label {
+  top: 0.1rem !important;
+  background: white !important;
+  padding-left: 0.2rem !important;
+  padding-right: 0.2rem !important;
+}
+
+.p-field{
+  // background-color: lightgrey;
+  padding-bottom: 20px;
+}
+
+.p-inputtext,
+p-inputnumber,
+.p-inputnumber,
+.p-dropdown,
+.p-calendar,
+.p-inputnumber,
+.p-autocomplete {
+  width: 100% !important;
+}
+
+.p-toast {
+  opacity: 0.9;
+  z-index: 00;
+}
+
+.p-paginator {
+  justify-content: right !important;
+}
+
+.login-container{
+  .p-button{
+      width:100% !important
+  }
+}
+
+
+.app-pull-left {
+  float: left !important;
+  align-content: flex-start;
+  margin-right: auto !important;
+}
+
+.app-pull-right {
+  float: right !important;
+  align-content: flex-end;
+  margin-left: auto !important;
+}
+
+.icon-view:hover{
+  cursor: pointer;
+  color: #2563EB
+
+}
+
+.icon-edit:hover{
+  cursor: pointer;
+  color: #D97706
+
+}
+
+.icon-delete:hover{
+  cursor: pointer;
+  color: #DC2626
+
 }
